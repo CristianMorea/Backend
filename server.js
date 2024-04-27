@@ -7,7 +7,6 @@ const app = express();
 const port = 3000; // Asegúrate de usar el puerto correcto
 
 // Middleware para CORS
-// Permitir solicitudes desde cualquier origen o desde un origen específico
 app.use(cors({ origin: '*' })); // Permitir solicitudes desde cualquier origen
 
 // Middleware para solicitudes JSON
@@ -27,7 +26,7 @@ connection.connect((err) => {
     console.error('Error al conectar a la base de datos:', err);
     process.exit(1); // Termina si hay un error de conexión
   } else {
-    console.log('Conexión establecida con la base de datos MySQL');
+    console.log('Conexión establecida con la base de datos MySQL'); // Confirmación de conexión
   }
 });
 
@@ -39,7 +38,8 @@ app.get('/categories', (req, res) => {
       console.error('Error al obtener categorías:', err); // Manejar errores
       res.status(500).send('Error al obtener categorías'); // Retornar un error
     } else {
-      res.json(results); // Enviar resultados como JSON
+      console.log('Categorías obtenidas:', results); // Mostrar resultados en la consola del servidor
+      res.json(results); // Enviar resultados como JSON al cliente
     }
   });
 });
