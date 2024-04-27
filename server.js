@@ -1,73 +1,51 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const bcrypt = require('bcrypt'); // Importa bcrypt para el hashing de contraseñas
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 3000;
 
-// Middleware para permitir CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Permitir solicitudes desde cualquier origen
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Permitir métodos específicos
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Permitir encabezados específicos
-  next();
-});
+// Middleware para CORS
+app.use(cors({ origin: '*' })); // Permitir solicitudes desde cualquier origen
 
-// Configura la conexión a la base de datos MySQL
+// Conexión a la base de datos MySQL
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'blog'
+  database: 'blog',
 });
 
-// Conecta a la base de datos MySQL
+// Manejar errores de conexión
 connection.connect((err) => {
   if (err) {
     console.error('Error al conectar a la base de datos:', err);
-    process.exit(1); // Termina el proceso de Node.js si hay un error de conexión
+    process.exit(1);
   }
   console.log('Conexión establecida con la base de datos MySQL');
 });
 
-// Middleware para analizar solicitudes JSON
+// Middleware para solicitudes JSON
 app.use(bodyParser.json());
 
-
-
-
+// Endpoint para obtener categorías
 app.get('/categories', (req, res) => {
-  // Consulta SQL para obtener todas las categorías
-  const query = 'SELECT * FROM categoria';
-
+  const query = 'SELECT * FROM categoria'; // Consulta para obtener categorías
   connection.query(query, (err, results) => {
     if (err) {
       console.error('Error al obtener categorías:', err);
-      res.status(500).send('Error al obtener categorías');
+      res.status(500).send('Error al obtener categorías'); // Manejar errores
       return;
     }
-
-    res.json(results);  // Envía las categorías como respuesta JSON
+    res.json(results); // Enviar resultados como JSON
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(port, () => {
+  console.log(`Servidor corriendo en el puerto ${port}`); // Asegúrate de que el servidor está ejecutándose
+});
 
 
 
