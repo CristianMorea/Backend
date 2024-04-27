@@ -46,5 +46,7 @@ app.get('/categories', (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`); // Confirmar que el servidor está ejecutándose
+
+  console.log(`Servidor corriendo en el puerto ${port}`); // Confirmación de que el servidor está ejecutándose
 });
+
