@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000; // Usar variable de entorno para el puert
 
 // Middleware para CORS
 app.use(cors({
-  origin: ['http://localhost:8080'], // Restringir orígenes permitidos
+  origin: ['http://localhost:8080','http://localhost:8081'], // Restringir orígenes permitidos
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
   allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
 }));
@@ -47,6 +47,22 @@ app.get('/categories', (req, res) => {
     }
   });
 });
+
+
+
+// Endpoint para obtener artículos
+app.get('/articles', (req, res) => {
+  const query = 'SELECT * FROM articulo'; // Consulta para obtener todos los artículos
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error al obtener artículos:', err); // Manejar errores de la consulta
+      res.status(500).send('Error al obtener artículos'); // Código de estado 500 en caso de error
+    } else {
+      res.json(results); // Enviar resultados como JSON
+    }
+  });
+});
+
 
 // Iniciar el servidor
 app.listen(port, () => {
